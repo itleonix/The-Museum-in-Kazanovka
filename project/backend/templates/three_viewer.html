@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}3D Просмотрщик — Kazmuseum{% endblock %}
+
+{% block head_extra %}
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body { background: radial-gradient(60% 60% at 50% 30%, #eef7f6 0%, #f2eefe 100%); font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color: #355c61; }
+    /* Embed mode: hide chrome */
+    body.embed .topbar, body.embed .legend, body.embed .hud { display: none !important; }
+    body.embed .wrap { inset: 0; }
+    body.embed #viewer { width: 100%; height: 100%; }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "{% static 'vendor/three/three.module.js' %}",
+        "three/addons/": "{% static 'vendor/three/examples/jsm/' %}"
+      }
+    }
+  </script>
+{% endblock %}
+
+{% block content %}
+  <div class="topbar">
+    <button type="button" class="back-link">← Назад</button>
+    <span id="viewer-title">3D Просмотрщик</span>
+  </div>
+  <div class="wrap">
+    <div id="viewer" style="background: rgb(54 55 54)">
+      <div class="loading-overlay" id="loading-overlay" aria-live="polite" aria-busy="true">
+        <div class="spinner" aria-hidden="true"></div>
+        <div class="loading-text">Загрузка модели…</div>
+      </div>
+      <div class="hud" aria-hidden="false">
+        <button class="hud-btn hud-zoom-out" title="Уменьшить">−</button>
+        <button class="hud-btn hud-zoom-in" title="Увеличить">+</button>
+        <button class="hud-btn hud-reset" title="Сброс">⟲</button>
+      </div>
+    </div>
+  </div>
+  <div class="legend">
+    <button type="button" class="legend-close" aria-label="Скрыть подсказку"></button>
+    <span class="legend-text">Жесты: 1 палец — вращение • 2 пальца — масштаб и панорама • Двойной тап — сброс вида • Кнопки +/− — масштаб, ⟲ — сброс</span>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    // Я включаю «встраиваемый» режим, если есть параметр ?embed
+    (function(){
+      try{
+        var p = new URLSearchParams(location.search);
+        if (p.has('embed')) document.body.classList.add('embed');
+        // Я применяю цвет темы из параметров, чтобы .legend/кнопки окрасились
+        var theme = p.get('theme');
+        if (theme) {
+          var colors = {
+            green:  'rgba(53, 92, 97, 1)',
+            blue:   'rgba(51, 80, 91, 1)',
+            yellow: 'rgba(97, 75, 53, 1)',
+            orange: 'rgba(97, 65, 53, 1)',
+            purple: 'rgba(78, 52, 89, 1)'
+          };
+          var val = colors[theme];
+          if (val) document.documentElement.style.setProperty('--btn-color', val);
+        }
+        // Я задаю заголовок из параметров запроса
+        var title = p.get('title');
+        if (title) {
+          var el = document.getElementById('viewer-title');
+          if (el) el.textContent = title;
+          try { document.title = title + ' — 3D Просмотрщик'; } catch(e){}
+        }
+        // Я настраиваю поведение кнопки «Назад» — возвращаюсь в карточку элемента
+        var back = document.querySelector('.back-link');
+        if (back) back.addEventListener('click', function(){
+          var slug = p.get('slug');
+          var theme = p.get('theme');
+          if (slug) {
+            var q = new URLSearchParams();
+            q.set('item', slug);
+            if (theme) q.set('theme', theme);
+            location.href = '/?' + q.toString();
+          } else if (window.history && window.history.length > 1) {
+            window.history.back();
+          } else {
+            location.href = '/';
+          }
+        });
+
+        // Я даю пользователю возможность скрыть подсказку (легенду)
+        var legendClose = document.querySelector('.legend .legend-close');
+        var legend = document.querySelector('.legend');
+        if (legendClose && legend) {
+          legendClose.addEventListener('click', function(){ legend.style.display = 'none'; });
+        }
+      }catch(e){}
+    })();
+  </script>
+  <script type="module" src="{% static 'js/three-viewer.module.js' %}"></script>
+{% endblock %}

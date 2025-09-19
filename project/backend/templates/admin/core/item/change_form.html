@@ -1,0 +1,27 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'admin/dragndrop.css' %}">
+{% endblock %}
+
+{% block admin_change_form_document_ready %}
+  {{ block.super }}
+  <script src="{% static 'admin/dragndrop.js' %}"></script>
+{% endblock %}
+
+{% block after_field_sets %}
+  {{ block.super }}
+  <fieldset class="module aligned">
+    <h2>Мультизагрузка фото</h2>
+    <div class="dnd-multi" data-field="bulk_images">
+      <div class="dnd-dropzone">Перетащите несколько фото сюда или кликните</div>
+      <div class="dnd-native">
+        <input type="file" name="bulk_images" id="id_bulk_images" accept="image/*" multiple>
+      </div>
+      <div class="dnd-preview"></div>
+    </div>
+    <p class="help">Файлы будут добавлены как отдельные записи Фото с последовательным порядком.</p>
+  </fieldset>
+{% endblock %}

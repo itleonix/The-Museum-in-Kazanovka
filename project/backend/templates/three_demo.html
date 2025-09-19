@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Three.js Demo — Kazmuseum</title>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body { background: linear-gradient(180deg, #e7f4f2 0%, #f7f2ff 100%); font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color: #355c61; }
+    .topbar { position: fixed; inset: 0 auto auto 0; height: 56px; right: 0; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: rgba(255,255,255,.7); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(0,0,0,.06); z-index: 2; }
+    .topbar a { color: #355c61; text-decoration: none; font-weight: 600; }
+    .wrap { position: absolute; inset: 56px 0 0 0; display: block; }
+    #three-stage { width: 100%; height: 100%; border-radius: 0; overflow: hidden; box-shadow: none; background: radial-gradient(80% 80% at 50% 50%, rgba(255,255,255,.85) 0%, rgba(255,255,255,.55) 100%); }
+    .legend { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.7); border: 1px solid rgba(0,0,0,.06); font-size: 13px; color: #2f796c; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="/">← На главную</a>
+    <span>Демонстрация three.js (вращающиеся объекты)</span>
+  </div>
+  <div class="wrap">
+    <div id="three-stage"></div>
+    <div class="legend">ЛКМ/тач — вращение камеры, Колесо — зум</div>
+  </div>
+  <script src="{% static 'js/fullscreen-guard.js' %}"></script>
+  <script type="module" src="{% static 'js/three-standalone.module.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Do not send local env files into Docker context
+.env
+.env.*
+
+# Heavy/private data not needed for build
+backups
+data/postgres
+images
+bundle
+backend/media
+backend/staticfiles
+

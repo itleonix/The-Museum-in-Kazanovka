@@ -1,0 +1,38 @@
+# General
+.DS_Store
+Thumbs.db
+*.py[cod]
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.idea/
+.vscode/
+.coverage*
+.venv/
+venv/
+env/
+
+# Env files (keep only examples)
+.env
+.env.*
+!project/.env.example
+
+# Build/artifacts
+dist/
+build/
+*.log
+
+# Project-specific large/private data
+images/
+bundle/
+backups/
+project/backups/
+project/images/
+project/data/postgres/
+project/backend/db.sqlite3
+project/backend/media/
+project/backend/staticfiles/
+project/.env
+project/.env.*
+!project/.env.example
+

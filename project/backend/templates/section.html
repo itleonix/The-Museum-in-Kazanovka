@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Kazmuseum</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/detail.css' %}">
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "/static/vendor/three/three.module.js",
+          "three/addons/": "/static/vendor/three/examples/jsm/"
+        }
+      }
+    </script>
+</head>
+<body>
+    <div class="background background-green">
+        <div class="main main-green">
+            <h1 class="h1-green">Энциклопедия Казановки</h1>
+            <div class="section-green">
+                <div class="section-left-green">
+                {% for section in sections %}
+                    <button id="{{ section.color }}" data-section="{{ section.slug }}" class="button-{{ section.color }}"><img src="{{ section.icon.url }}" style="padding: 20px 10px 20px 0px;" /> {{ section.name }}</button>
+                {% endfor %}
+                </div>
+                <div class="section-right-green" id="section-panel" style="max-width: 60%; width: 60%;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/fullscreen-guard.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

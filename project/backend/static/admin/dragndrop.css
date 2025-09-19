@@ -1,0 +1,24 @@
+/* Простые стили для зоны перетаскивания */
+.dnd-file { margin: .25rem 0 .5rem; }
+.dnd-dropzone {
+  border: 2px dashed #bbb;
+  border-radius: 6px;
+  padding: 12px;
+  text-align: center;
+  color: #666;
+  background: #fafafa;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease;
+}
+.dnd-dropzone.is-dragover {
+  background: #f0f7ff;
+  border-color: #8ab4f8;
+  color: #333;
+}
+.dnd-native input[type="file"] {
+  display: none; /* скрываем стандартный input, но оставляем clear/preview от Django */
+}
+.dnd-preview { margin-top: 8px; }
+.dnd-preview img { max-height: 120px; border-radius: 4px; }
+/* Плашка с именем файла для не-изображений (видео, 3D и т.п.) */
+.dnd-preview .file-pill { display: inline-block; padding: 6px 10px; border-radius: 999px; background: #eef4ff; color: #355; font-size: 12px; }

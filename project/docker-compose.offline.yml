@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:16
+    pull_policy: never
+    container_name: kazmuseum_postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      TZ: ${TZ}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  web:
+    image: kazmuseum_web:offline
+    pull_policy: never
+    container_name: kazmuseum_django
+    env_file: .env
+    working_dir: /app/backend
+    depends_on:
+      db:
+        condition: service_healthy
+    command: bash -lc "mkdir -p static/vendor/three && cp -rf /opt/vendor/three/* static/vendor/three/ 2>/dev/null || true; python manage.py migrate && python manage.py runserver 0.0.0.0:9090"
+    volumes:
+      - ./backend:/app/backend
+    ports:
+      - "9090:9090"
